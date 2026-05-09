@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Site{% endblock %}</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --overlay: rgba(0, 0, 0, 0.35);
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            color: #111;
+        }
+
+        .video-bg {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+        }
+
+        .video-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--overlay);
+            z-index: -1;
+        }
+
+        .page-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .product-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-img {
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .audio-toggle {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <video class="video-bg" autoplay muted loop playsinline>
+        <source src="{% static 'media/background.mp4' %}" type="video/mp4">
+    </video>
+    <div class="video-overlay"></div>
+
+    <button class="btn btn-light shadow-sm audio-toggle" type="button" id="audioToggle">
+        Enable sound
+    </button>
+
+    <main class="page-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const video = document.querySelector(".video-bg");
+        const toggle = document.getElementById("audioToggle");
+
+        toggle.addEventListener("click", () => {
+            video.muted = !video.muted;
+            toggle.textContent = video.muted ? "Enable sound" : "Mute sound";
+        });
+    </script>
+</body>
+</html>
