@@ -6,6 +6,5 @@ class Product(models.Model):
     prodname = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.TextField()
-    stock = models.IntegerField()
-    weight_kg = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
+    stock = models.IntegerField(default=0)
     image_url = models.URLField(max_length=500)

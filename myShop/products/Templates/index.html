@@ -4,37 +4,58 @@
 
 {% block content %}
 <div class="container py-5">
-    <h1 class="text-center mb-4 fw-bold text-primary">Product Catalog</h1>
+    <div class="text-center mb-4">
+        <h1 class="catalog-title text-white mb-2">Product Catalog</h1>
+        <p class="catalog-subtitle mb-0">Curated picks with clean design and clear details.</p>
+    </div>
 
     <div class="row g-4">
 
         {% for product in products %}
-        <div class="col-md-4">
+        <div class="col-md-4 col-sm-6">
 
-            <div class="card product-card border-0 shadow-sm h-100">
+            <div class="card product-card border-0 h-100" style="--card-delay: {{ forloop.counter0 }};">
 
-                <img src="{{ product.image_url }}" alt="{{ product.prodname }}" class="card-img-top product-img">
+                <div class="product-media">
+                    <img src="{{ product.image_url|default:'' }}" alt="{{ product.prodname }}" class="product-img">
+                    <div class="media-overlay"></div>
+                    <div class="product-actions">
+                        <button class="btn-icon" type="button" aria-label="View product">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                        <button class="btn-icon" type="button" aria-label="Add to cart">
+                            <i class="bi bi-bag"></i>
+                        </button>
+                        <button class="btn-icon" type="button" aria-label="Add to wishlist">
+                            <i class="bi bi-heart"></i>
+                        </button>
+                    </div>
+                </div>
 
                 <div class="card-body">
-                    <h5 class="card-title text-dark fw-semibold">
+                    <h5 class="card-title product-title">
                         {{ product.prodname }}
                     </h5>
 
-                    <p class="text-muted small">
+                    <p class="product-desc small">
                         {{ product.description|truncatechars:100 }}
                     </p>
 
-                    <p class="fw-bold text-success mb-1">
-                        ₱{{ product.price }}
-                    </p>
-
-                    <p class="text-secondary small">
-                        Stock: {{ product.stock }}
-                    </p>
+                    <div class="product-meta">
+                        <p class="product-price mb-0">₱{{ product.price }}</p>
+                        {% if product.stock <= 0 %}
+                        <span class="badge-stock stock-out">Out of stock</span>
+                        {% elif product.stock <= 5 %}
+                        <span class="badge-stock stock-low">Low stock</span>
+                        {% else %}
+                        <span class="badge-stock stock-in">In stock</span>
+                        {% endif %}
+                    </div>
                 </div>
 
-                <div class="card-footer bg-transparent border-0">
-                    <button class="btn btn-primary w-100">
+                <div class="card-footer bg-transparent border-0 px-3 pb-4">
+                    <button class="btn btn-success w-100 btn-cart" type="button">
+                        <i class="bi bi-cart-plus me-2"></i>
                         Add to Cart
                     </button>
                 </div>
